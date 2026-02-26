@@ -29,20 +29,21 @@ const schema = a.schema({
       allow.groups(["OPERADOR"]).to(["read", "update"])
     ]),
 
-  Documento: a
-    .model({
-      obraId: a.id().required(),
-      nome: a.string().required(),
-      storagePath: a.string().required(),
-      contentType: a.string().required(),
-      tamanhoBytes: a.integer().required(),
-      obra: a.belongsTo("Obra", "obraId")
-    })
-    .authorization((allow) => [
-      allow.groups(["ADMIN", "GERENTE", "ENGENHEIRO", "OPERADOR"]).to(["read"]),
-      allow.groups(["ADMIN", "GERENTE", "ENGENHEIRO"]).to(["create", "delete"])
-    ])
-});
+Documento: a
+  .model({
+    obraId: a.id().required(),
+    nome: a.string().required(),
+    storagePath: a.string().required(),
+    contentType: a.string().required(),
+    tamanhoBytes: a.integer().required(),
+    obra: a.belongsTo("Obra", "obraId")
+  })
+  .authorization((allow) => [
+    allow.groups(["ADMIN"]).to(["create", "delete", "read"]),
+    allow.groups(["GERENTE"]).to(["create", "delete", "read"]),
+    allow.groups(["ENGENHEIRO"]).to(["create", "delete", "read"]),
+    allow.groups(["OPERADOR"]).to(["read"])
+  ])
 
 export type Schema = ClientSchema<typeof schema>;
 
